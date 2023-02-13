@@ -5,6 +5,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useRef } from "react";
 import { db, storage } from "../firebase";
+import Image from "next/image";
 export default function Input() {
 
     const { data: session } = useSession();
@@ -58,7 +59,7 @@ export default function Input() {
     <>
       {session && (
         <div className="flex  border-b border-gray-200 p-3 space-x-3">
-          <img
+          <Image
             onClick={signOut}
             src="https://s.pacn.ws/1500/nm/onepunch-man-cushion-saitama-425033.3.jpg?v=qmf6wj&width=760" // {session.user.image} 
             alt="user-img"
@@ -80,9 +81,10 @@ export default function Input() {
                   onClick={() => setSelectedFile(null)}
                   className="h-7 text-black absolute cursor-pointer shadow-md shadow-white rounded-full"
                 />
-                <img
+                <Image
                   src={selectedFile}
                   className={`${loading && "animate-pulse"}`}
+                  alt=""
                 />
               </div>
  

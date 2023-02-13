@@ -1,10 +1,11 @@
 import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, TrashIcon,} from "@heroicons/react/outline";
+import Image from "next/image";
   
   export default function Post({ post }) {
     return (
       <div className="flex p-3 cursor-pointer border-b border-gray-200">
         {/* user image */}
-        <img
+        <Image
           className="h-11 w-11 rounded-full mr-4"
           src= "https://s.pacn.ws/1500/nm/onepunch-man-cushion-saitama-425033.3.jpg?v=qmf6wj&width=760" // {post.data().userImg}
           alt="user-img"
@@ -37,7 +38,7 @@ import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, Trash
   
           {/* post image */}
   
-          <img className="rounded-2xl mr-2" src={post.data().image} alt="" /> 
+          <Image className="rounded-2xl mr-2" src={post.data().image} alt="" /> 
   
           {/* icons */}
   

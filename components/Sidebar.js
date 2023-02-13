@@ -12,7 +12,7 @@ export default function Sidebar() {
             <div className="hoverEffect p-0 hover:bg-blue-100 xl:px-1">
                 <Image width="50" 
                 height="50" 
-                src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png"></Image>
+                src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png" />
             </div>
 
             {/* Menu */}
@@ -39,7 +39,7 @@ export default function Sidebar() {
 
                     {/* Mini profil */}
                     <div className="hoverEffect text-gray-700 flex items-center justify-center xl:justify-start mt-auto">
-                        <img src="https://s.pacn.ws/1500/nm/onepunch-man-cushion-saitama-425033.3.jpg?v=qmf6wj&width=760"  // {session.user.image}
+                        <Image src="https://s.pacn.ws/1500/nm/onepunch-man-cushion-saitama-425033.3.jpg?v=qmf6wj&width=760"  // {session.user.image}
                             alt="Profil picture" 
                             className="h-10 w-10 rounded-full xl:mr-2"
                             onClick={signOut}
