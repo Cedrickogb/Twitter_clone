@@ -1,40 +1,34 @@
-import {
-  EmojiHappyIcon,
-  PhotographIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useSession, signOut } from "next-auth/react";
 import { useState, useRef } from "react";
 import { db, storage } from "../firebase";
+import { useRecoilState } from "recoil";
+import { userState } from "../atom/userAtom";
+import { signOut, getAuth } from "firebase/auth";
 export default function Input() {
-  const { data: session } = useSession();
   const [input, setInput] = useState("");
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const filePickerRef = useRef(null);
+  const auth = getAuth();
 
   const sendPost = async () => {
     if (loading) return;
     setLoading(true);
 
     const docRef = await addDoc(collection(db, "posts"), {
-      id: session.user.uid,
+      id: currentUser.uid,
       text: input,
-      userImg: session.user.image,
+      userImg: currentUser.userImg,
       timestamp: serverTimestamp(),
-      name: session.user.name,
-      username: session.user.username,
+      name: currentUser.name,
+      username: currentUser.username,
     });
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
     if (selectedFile) {
       await uploadString(imageRef, selectedFile, "data_url").then(async () => {
         const downloadURL = await getDownloadURL(imageRef);
@@ -43,27 +37,35 @@ export default function Input() {
         });
       });
     }
+
     setInput("");
     setSelectedFile(null);
     setLoading(false);
   };
+
   const addImageToPost = (e) => {
     const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
+
     reader.onload = (readerEvent) => {
       setSelectedFile(readerEvent.target.result);
     };
   };
 
+  function onSignOut() {
+    signOut(auth);
+    setCurrentUser(null);
+  }
+
   return (
     <>
-      {session && (
+      {currentUser && (
         <div className="flex  border-b border-gray-200 p-3 space-x-3">
           <img
-            onClick={signOut}
-            src={session.user.image}
+            onClick={onSignOut}
+            src={currentUser?.userImg}
             alt="user-img"
             className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
           />
@@ -77,9 +79,9 @@ export default function Input() {
                 onChange={(e) => setInput(e.target.value)}
               ></textarea>
             </div>
-            {selectedFile && (
+            {selectedFile && ( // Affichage de la sélection d'image avec option de suppression de selection de celle selectioné
               <div className="relative">
-                <XIcon
+                <XIcon // icone de désélection de l'image sélectionée 
                   onClick={() => setSelectedFile(null)}
                   className="border h-7 text-black absolute cursor-pointer shadow-md border-white m-1 rounded-full"
                 />
@@ -90,7 +92,7 @@ export default function Input() {
               </div>
             )}
             <div className="flex items-center justify-between pt-2.5">
-              {!loading && (
+              {!loading && ( // affichage de l'image arès selection 
                 <>
                   <div className="flex">
                     <div
@@ -98,11 +100,11 @@ export default function Input() {
                       onClick={() => filePickerRef.current.click()}
                     >
                       <PhotographIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
-                      <input
+                      <input // ajout d'une image
                         type="file"
                         hidden
                         ref={filePickerRef}
-                        onChange={addImageToPost}
+                        onChange={addImageToPost} // affichage de l'image après selection (fonction importante)
                       />
                     </div>
                     <EmojiHappyIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
