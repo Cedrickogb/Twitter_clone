@@ -22,7 +22,7 @@ export default function Signin() {
           timestamp: serverTimestamp(),
         });
       }
-      router.push("/");
+      router.push("https://accounts.google.com/o/oauth2/auth/oauthchooseaccount?response_type=code&client_id=1017491681738-7be9o5ufeauoninddum92ao0p39869sd.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Ftwitter-v4-88045.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDmoMMJRd_JVsiY1rh0vdtQ4gB23CeFRzhKF8GYjRZlidpp2kV3rjiWJNl9gKQFS3TPTg3_HuH0UscuEMsATV_yX_hLxKwUHHhkvSGuX2s6RY8LKXN4hgvKxRy_LJDaYG1XtkKa1XBfx8eArKIIpGt9KZz02SKzUgOJajWLA2QBC_roHIKWrqBNqlq49tsEt8VOEApyQNxO8iy-PC9cGOXKdTUT3Vm2MQvBO2_xRJUFFHrbodCPJsAc8panVLxpsK7YVw4S1FXWrNHj17mPqSX5w2EssO6QVTLUueI-lZAsYZdmzRw05anT6jucvpTkB3F9zrVak6Dc&scope=openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20profile&context_uri=http%3A%2F%2Flocalhost%3A3001&service=lso&o2v=1&flowName=GeneralOAuthFlow");
     } catch (error) {
       console.log(error);
     }
