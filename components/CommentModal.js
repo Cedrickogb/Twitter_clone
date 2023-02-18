@@ -3,11 +3,12 @@ import { modalState, postIdState } from "../atom/modalAtom";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef  } from "react";
 import { db } from "../firebase";
 import { addDoc, collection, doc, onSnapshot, serverTimestamp } from "firebase/firestore";
 import Moment from "react-moment";
 import { userState } from "../atom/userAtom";
+
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
@@ -15,6 +16,19 @@ export default function CommentModal() {
   const [post, setPost] = useState({});
   const [input, setInput] = useState("");
   const router = useRouter();
+  const filePickerRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const addImageToComment = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
 
   useEffect(() => {
     onSnapshot(doc(db, "posts", postId), (snapshot) => {
@@ -94,17 +108,15 @@ export default function CommentModal() {
 
                 <div className="flex items-center justify-between pt-2.5">
                   <div className="flex">
-                    <div
-                      className=""
-                      // onClick={() => filePickerRef.current.click()}
+                    <div className="" onClick={() => filePickerRef.current.click()}
                     >
                       <PhotographIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
-                      {/* <input
+                      <input
                         type="file"
                         hidden
                         ref={filePickerRef}
-                        onChange={addImageToPost}
-                      /> */}
+                        onChange={addImageToComment}
+                      />
                     </div>
                     <EmojiHappyIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
                   </div>
