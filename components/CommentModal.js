@@ -106,6 +106,7 @@ export default function CommentModal() {
                   ></textarea>
                 </div>
 
+                {/* Ajout d'une image en commentaire */} 
                 <div className="flex items-center justify-between pt-2.5">
                   <div className="flex">
                     <div className="" onClick={() => filePickerRef.current.click()}
@@ -120,6 +121,7 @@ export default function CommentModal() {
                     </div>
                     <EmojiHappyIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
                   </div>
+
                   <button
                     onClick={sendComment}
                     disabled={!input.trim()}
